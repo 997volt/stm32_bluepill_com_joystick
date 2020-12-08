@@ -23,7 +23,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include<string.h>
+#include <stdio.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -77,7 +78,21 @@ void StartHT(void *argument);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+void send_string(char* s)
+{
+	HAL_UART_Transmit(&huart1, (uint8_t*)s, strlen(s), 1000);
+}
 
+void send_char(char c)
+{
+	HAL_UART_Transmit(&huart1, (uint8_t*)&c, 1, 1000);
+}
+
+int __io_putchar(int ch)
+{
+	send_char(ch);
+	return ch;
+}
 /* USER CODE END 0 */
 
 /**
@@ -111,7 +126,7 @@ int main(void)
   MX_USART1_UART_Init();
   MX_ADC1_Init();
   /* USER CODE BEGIN 2 */
-
+  HAL_ADC_Start(&hadc1);
   /* USER CODE END 2 */
 
   /* Init scheduler */
@@ -242,7 +257,7 @@ static void MX_ADC1_Init(void)
   */
   sConfig.Channel = ADC_CHANNEL_0;
   sConfig.Rank = ADC_REGULAR_RANK_1;
-  sConfig.SamplingTime = ADC_SAMPLETIME_1CYCLE_5;
+  sConfig.SamplingTime = ADC_SAMPLETIME_71CYCLES_5;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
   {
     Error_Handler();
@@ -355,7 +370,13 @@ void StartHT(void *argument)
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+	  if(HAL_ADC_PollForConversion(&hadc1, 10) == HAL_OK)
+	  {
+		int read = HAL_ADC_GetValue(&hadc1); // Get X value
+		printf("%d\n", read);
+		HAL_ADC_Start(&hadc1);
+	  }
+	  osDelay(1000);
   }
   /* USER CODE END StartHT */
 }
