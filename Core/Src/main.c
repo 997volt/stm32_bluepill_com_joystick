@@ -93,6 +93,17 @@ int __io_putchar(int ch)
 	send_char(ch);
 	return ch;
 }
+
+void ADC_SetActiveChannel(ADC_HandleTypeDef *hadc, uint32_t AdcChannel)
+{
+  ADC_ChannelConfTypeDef sConfig = {0};
+  sConfig.Channel = AdcChannel;
+  sConfig.Rank = 1;
+  if (HAL_ADC_ConfigChannel(hadc, &sConfig) != HAL_OK)
+  {
+   Error_Handler();
+  }
+}
 /* USER CODE END 0 */
 
 /**
@@ -370,12 +381,24 @@ void StartHT(void *argument)
   /* Infinite loop */
   for(;;)
   {
+	  int read = 0;
 	  if(HAL_ADC_PollForConversion(&hadc1, 10) == HAL_OK)
 	  {
-		int read = HAL_ADC_GetValue(&hadc1); // Get X value
-		printf("%d\n", read);
+		read = HAL_ADC_GetValue(&hadc1);
+		ADC_SetActiveChannel(&hadc1, ADC_CHANNEL_0);
 		HAL_ADC_Start(&hadc1);
 	  }
+
+	  printf("ch0 = %d\n", read);
+
+	  if(HAL_ADC_PollForConversion(&hadc1, 10) == HAL_OK)
+	  {
+		read = HAL_ADC_GetValue(&hadc1);
+		ADC_SetActiveChannel(&hadc1, ADC_CHANNEL_1);
+		HAL_ADC_Start(&hadc1);
+	  }
+
+	  printf("ch1 = %d\n", read);
 	  osDelay(1000);
   }
   /* USER CODE END StartHT */
