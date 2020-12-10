@@ -61,7 +61,7 @@ const osThreadAttr_t HT_attributes = {
   .stack_size = 128 * 4
 };
 /* USER CODE BEGIN PV */
-
+int Joystick[2] = {0,0};
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
