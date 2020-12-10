@@ -381,24 +381,22 @@ void StartHT(void *argument)
   /* Infinite loop */
   for(;;)
   {
-	  int read = 0;
 	  if(HAL_ADC_PollForConversion(&hadc1, 10) == HAL_OK)
 	  {
-		read = HAL_ADC_GetValue(&hadc1);
-		ADC_SetActiveChannel(&hadc1, ADC_CHANNEL_0);
-		HAL_ADC_Start(&hadc1);
-	  }
-
-	  printf("ch0 = %d\n", read);
-
-	  if(HAL_ADC_PollForConversion(&hadc1, 10) == HAL_OK)
-	  {
-		read = HAL_ADC_GetValue(&hadc1);
+		Joystick[0] = HAL_ADC_GetValue(&hadc1);
 		ADC_SetActiveChannel(&hadc1, ADC_CHANNEL_1);
 		HAL_ADC_Start(&hadc1);
 	  }
 
-	  printf("ch1 = %d\n", read);
+	  if(HAL_ADC_PollForConversion(&hadc1, 10) == HAL_OK)
+	  {
+		Joystick[1] = HAL_ADC_GetValue(&hadc1);
+		ADC_SetActiveChannel(&hadc1, ADC_CHANNEL_0);
+		HAL_ADC_Start(&hadc1);
+	  }
+
+	  printf("%d	;%d\n", Joystick[0], Joystick[1]);
+
 	  osDelay(1000);
   }
   /* USER CODE END StartHT */
