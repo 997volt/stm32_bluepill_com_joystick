@@ -54,7 +54,10 @@ extern "C" {
 void Error_Handler(void);
 
 /* USER CODE BEGIN EFP */
-
+void send_string(char* s);
+void send_char(char c);
+int __io_putchar(int ch);
+void ADC_SetActiveChannel(ADC_HandleTypeDef *hadc, uint32_t AdcChannel);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
