@@ -387,7 +387,16 @@ void StartHT(void *argument)
   /* Infinite loop */
   for(;;)
   {
-	  printf("%d	;%d\n", Joystick[0], Joystick[1]);
+	  if (Joystick[0] > 3200 && Joystick[0] > Joystick[1])
+		  printf("R\n");
+	  else if (Joystick[0] < 1000 && Joystick[0] < Joystick[1])
+		  printf("L\n");
+	  else if (Joystick[1] > 3200 && Joystick[0] < Joystick[1])
+		  printf("U\n");
+	  else if (Joystick[1] < 1000 && Joystick[0] > Joystick[1])
+		  printf("D\n");
+	  else
+		  printf("N\n");
 
 	  osDelay(250);
   }
