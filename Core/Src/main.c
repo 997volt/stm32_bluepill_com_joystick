@@ -388,17 +388,17 @@ void StartHT(void *argument)
   for(;;)
   {
 	  if (Joystick[0] > 3200 && Joystick[0] > Joystick[1])
-		  printf("R\n");
+		  printf("R\r\n");
 	  else if (Joystick[0] < 1000 && Joystick[0] < Joystick[1])
-		  printf("L\n");
+		  printf("L\r\n");
 	  else if (Joystick[1] > 3200 && Joystick[0] < Joystick[1])
-		  printf("U\n");
+		  printf("U\r\n");
 	  else if (Joystick[1] < 1000 && Joystick[0] > Joystick[1])
-		  printf("D\n");
+		  printf("D\r\n");
 	  else
-		  printf("N\n");
+		  printf("N\r\n");
 
-	  osDelay(250);
+	  osDelay(1000);
   }
   /* USER CODE END StartHT */
 }
